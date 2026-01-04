@@ -1,0 +1,871 @@
+/* ============================================
+   MENÚ LIBRO - ORGANIZADO POR CATEGORÍAS
+   Con tabs de navegación y headers de categoría
+   ============================================ */
+
+/* === Sección principal === */
+.menu-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+/* === Fondo beige neutro elegante === */
+.menu-section__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    170deg,
+    #f5f0e8 0%,
+    #ebe4d8 25%,
+    #e8e0d0 50%,
+    #ebe4d8 75%,
+    #f0e9dd 100%
+  );
+  z-index: 0;
+}
+
+.menu-section__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(196, 30, 58, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(139, 90, 43, 0.04) 0%, transparent 40%);
+}
+
+/* === Container === */
+.menu-section__container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* === Header === */
+.menu-section__header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.menu-section__eyebrow {
+  display: block;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #8b7355;
+  margin-bottom: 8px;
+}
+
+.menu-section__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: #C41E3A;
+  margin-bottom: 12px;
+}
+
+.menu-section__divider {
+  width: 140px;
+  height: 18px;
+  margin: 0 auto 12px;
+  color: #C41E3A;
+}
+
+.menu-section__subtitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  color: #6b5a4a;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* === Divider SVG === */
+.menu-divider {
+  display: block;
+  color: inherit;
+}
+
+/* === TABS DE CATEGORÍAS === */
+.menu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 25px;
+  padding: 0 10px;
+}
+
+.menu-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(196, 30, 58, 0.15);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Lato', sans-serif;
+}
+
+.menu-tab:hover {
+  background: rgba(196, 30, 58, 0.08);
+  border-color: rgba(196, 30, 58, 0.3);
+}
+
+.menu-tab--active {
+  background: linear-gradient(135deg, #C41E3A, #9B1B30);
+  border-color: #C41E3A;
+  box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+}
+
+.menu-tab__icon {
+  width: 18px;
+  height: 18px;
+  color: #8b7355;
+  transition: all 0.3s ease;
+}
+
+.menu-tab__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.menu-tab--active .menu-tab__icon {
+  color: #fff;
+}
+
+.menu-tab__name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5a4a3a;
+  transition: all 0.3s ease;
+}
+
+.menu-tab--active .menu-tab__name {
+  color: #fff;
+}
+
+/* En móvil, ocultar texto y solo mostrar iconos */
+@media (max-width: 768px) {
+  .menu-tab {
+    padding: 10px;
+  }
+
+  .menu-tab__name {
+    display: none;
+  }
+
+  .menu-tab__icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* === El libro del menú === */
+.menu-book {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* === Navegación === */
+.menu-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  border: 2px solid #C41E3A;
+  border-radius: 50%;
+  color: #C41E3A;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.menu-nav svg {
+  width: 20px;
+  height: 20px;
+}
+
+.menu-nav:hover {
+  background: #C41E3A;
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 5px 20px rgba(196, 30, 58, 0.3);
+}
+
+/* === El libro === */
+.book {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+}
+
+/* === Sombra del libro === */
+.book__shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 10%;
+  right: 10%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
+  filter: blur(8px);
+  z-index: -1;
+}
+
+/* === Lomo del libro === */
+.book__spine {
+  position: absolute;
+  left: -12px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: linear-gradient(90deg,
+    #5a3d2b 0%,
+    #8b6914 50%,
+    #5a3d2b 100%
+  );
+  border-radius: 3px 0 0 3px;
+  z-index: 5;
+  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* === Páginas apiladas === */
+.book__stacked-pages {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 8px;
+  z-index: 1;
+}
+
+.book__stacked-pages--left {
+  left: -8px;
+  background: linear-gradient(90deg,
+    #e8e4dd 0px,
+    #e8e4dd 2px,
+    #ddd8cf 2px,
+    #ddd8cf 4px,
+    #d5d0c7 4px,
+    #d5d0c7 6px,
+    #ccc7be 6px
+  );
+  border-radius: 2px 0 0 2px;
+}
+
+.book__stacked-pages--right {
+  right: -8px;
+  background: linear-gradient(270deg,
+    #e8e4dd 0px,
+    #e8e4dd 2px,
+    #ddd8cf 2px,
+    #ddd8cf 4px,
+    #d5d0c7 4px,
+    #d5d0c7 6px,
+    #ccc7be 6px
+  );
+  border-radius: 0 2px 2px 0;
+}
+
+/* === Página actual === */
+.book__page {
+  position: relative;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.book__page--loading {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+/* === Overlay de carga === */
+.book__loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 100;
+  border-radius: 4px;
+}
+
+.book__loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(196, 30, 58, 0.2);
+  border-top-color: #C41E3A;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Página del menú === */
+.menu-page {
+  position: relative;
+  min-height: 600px;
+  overflow: hidden;
+  border-radius: 0 4px 4px 0;
+}
+
+/* === Textura de papel === */
+.menu-page__paper {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    #fdfcfa 0%,
+    #f9f7f3 40%,
+    #f5f2ec 100%
+  );
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 8px 25px rgba(0, 0, 0, 0.06),
+    inset 0 0 80px rgba(139, 90, 43, 0.02);
+}
+
+/* === Borde de página === */
+.menu-page__border {
+  position: absolute;
+  inset: 15px;
+  border: 1px solid rgba(196, 30, 58, 0.12);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+.menu-page__border::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(196, 30, 58, 0.06);
+  border-radius: 1px;
+}
+
+/* === Ornamentos de esquina === */
+.corner-ornament {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  color: #C41E3A;
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.corner-ornament--top-left {
+  top: 8px;
+  left: 8px;
+}
+
+.corner-ornament--top-right {
+  top: 8px;
+  right: 8px;
+  transform: scaleX(-1);
+}
+
+.corner-ornament--bottom-left {
+  bottom: 8px;
+  left: 8px;
+  transform: scaleY(-1);
+}
+
+.corner-ornament--bottom-right {
+  bottom: 8px;
+  right: 8px;
+  transform: scale(-1);
+}
+
+/* === Contenido de página === */
+.menu-page__content {
+  position: relative;
+  z-index: 1;
+  padding: 30px 30px 70px;
+  height: 100%;
+}
+
+/* === HEADER DE CATEGORÍA === */
+.category-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+}
+
+.category-header__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #C41E3A, #9B1B30);
+  border-radius: 50%;
+  color: #fff;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+}
+
+.category-header__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.category-header__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #C41E3A;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.category-header__subtitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: #8b7355;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.category-header__line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C41E3A, transparent);
+  margin: 0 auto;
+}
+
+/* === Items del menú === */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 20px;
+}
+
+.menu-items--few {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.menu-item {
+  padding: 12px 14px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.menu-item:hover {
+  background: rgba(196, 30, 58, 0.04);
+  transform: translateY(-2px);
+}
+
+.menu-item--featured {
+  background: linear-gradient(135deg, rgba(196, 30, 58, 0.05), rgba(212, 168, 83, 0.05));
+  border-left: 3px solid #C41E3A;
+  padding-left: 11px;
+}
+
+.menu-item__header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.menu-item__badge {
+  color: #D4A853;
+  font-size: 0.7rem;
+}
+
+.menu-item__name {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #C41E3A;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.menu-item__line {
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #ccc 0, #ccc 2px, transparent 2px, transparent 5px);
+  min-width: 10px;
+  margin: 0 4px;
+  opacity: 0.4;
+  align-self: center;
+}
+
+.menu-item__price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8b6914;
+}
+
+.menu-item__desc {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.68rem;
+  color: #6b5a4a;
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+
+.menu-item__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* === Botón WhatsApp === */
+.menu-item__order {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(5px);
+}
+
+.menu-item:hover .menu-item__order {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.menu-item__order:hover {
+  background: linear-gradient(135deg, #128C7E, #075E54);
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.4);
+}
+
+/* === Número de página elegante === */
+.menu-page__pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.menu-page__pagination-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 25px;
+  background: linear-gradient(135deg, #C41E3A, #9B1B30);
+  border-radius: 25px;
+  box-shadow:
+    0 4px 15px rgba(196, 30, 58, 0.3),
+    0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-page__pagination-current {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+  min-width: 24px;
+  text-align: center;
+}
+
+.menu-page__pagination-separator {
+  width: 20px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 1px;
+}
+
+.menu-page__pagination-total {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* === Paginación de dots === */
+.menu-pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.menu-pagination__dots {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-pagination__dot {
+  width: 10px;
+  height: 10px;
+  background: rgba(196, 30, 58, 0.2);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-pagination__dot:hover {
+  background: rgba(196, 30, 58, 0.4);
+  transform: scale(1.15);
+}
+
+.menu-pagination__dot--active {
+  background: #C41E3A;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(196, 30, 58, 0.4);
+}
+
+/* === CTA === */
+.menu-cta {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.menu-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.menu-cta__btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+}
+
+/* === Hint === */
+.menu-hint {
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  color: #8b7355;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .menu-section {
+    padding: 50px 0;
+  }
+
+  .menu-section__header {
+    margin-bottom: 20px;
+  }
+
+  .menu-tabs {
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .menu-book {
+    gap: 10px;
+  }
+
+  .menu-nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .menu-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .book__spine,
+  .book__stacked-pages {
+    display: none;
+  }
+
+  .menu-page {
+    min-height: auto;
+    border-radius: 8px;
+  }
+
+  .menu-page__paper {
+    border-radius: 8px;
+  }
+
+  .menu-page__content {
+    padding: 20px 18px 65px;
+  }
+
+  .category-header {
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+  }
+
+  .category-header__icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .category-header__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .category-header__title {
+    font-size: 1.3rem;
+  }
+
+  .category-header__subtitle {
+    font-size: 0.72rem;
+  }
+
+  .menu-items {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .corner-ornament {
+    width: 35px;
+    height: 35px;
+    opacity: 0.4;
+  }
+
+  .menu-page__border {
+    inset: 10px;
+  }
+
+  .menu-item__order {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .menu-page__pagination-inner {
+    padding: 8px 20px;
+  }
+
+  .menu-page__pagination-current {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-section {
+    padding: 40px 0;
+  }
+
+  .menu-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .menu-section__title {
+    font-size: 1.8rem;
+  }
+
+  .menu-page__content {
+    padding: 18px 14px 60px;
+  }
+
+  .category-header__icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .category-header__title {
+    font-size: 1.15rem;
+  }
+
+  .corner-ornament {
+    width: 28px;
+    height: 28px;
+  }
+
+  .menu-item {
+    padding: 10px;
+  }
+
+  .menu-item__name {
+    font-size: 0.72rem;
+  }
+
+  .menu-item__desc {
+    font-size: 0.62rem;
+  }
+
+  .menu-item__line {
+    display: none;
+  }
+
+  .menu-item__price {
+    margin-left: auto;
+  }
+
+  .menu-page__pagination-inner {
+    padding: 6px 16px;
+    gap: 10px;
+  }
+
+  .menu-page__pagination-current {
+    font-size: 1.1rem;
+  }
+
+  .menu-page__pagination-separator {
+    width: 15px;
+  }
+
+  .menu-page__pagination-total {
+    font-size: 0.9rem;
+  }
+}
+
+/* Touch devices */
+@media (hover: none) {
+  .menu-item__order {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .book__loading-spinner {
+    animation: none;
+  }
+
+  .book__page {
+    transition: none;
+  }
+}
