@@ -1,10 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import './Menu.css'
 
-// Número de WhatsApp del restaurante
 const WHATSAPP_NUMBER = '56912345678'
 
-// Menú organizado por categorías
 const menuCategories = [
   {
     id: 'ceviches',
@@ -100,7 +98,7 @@ const menuCategories = [
   },
   {
     id: 'bebidas',
-    name: 'Bebidas Sin Alcohol',
+    name: 'Bebidas',
     subtitle: 'Refrescos tradicionales',
     icon: 'drink',
     dishes: [
@@ -125,13 +123,11 @@ const menuCategories = [
   },
 ]
 
-// Función para abrir WhatsApp
 const openWhatsApp = (itemName, price) => {
   const message = encodeURIComponent(`¡Hola! Deseo pedir:\n\n${itemName}\nPrecio: $${price}\n\n¿Está disponible?`)
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank')
 }
 
-// Iconos de categoría
 const CategoryIcon = ({ type }) => {
   const icons = {
     fish: (
@@ -197,63 +193,48 @@ const CategoryIcon = ({ type }) => {
   return icons[type] || icons.main
 }
 
-// Ornamento de esquina
-const CornerOrnament = ({ position }) => (
-  <svg className={`corner-ornament corner-ornament--${position}`} viewBox="0 0 80 80" fill="none">
-    <path d="M5 40 Q5 5 40 5" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.7"/>
-    <path d="M8 40 Q8 8 40 8" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.4"/>
-    <circle cx="40" cy="5" r="2" fill="currentColor" opacity="0.6"/>
-    <circle cx="5" cy="40" r="2" fill="currentColor" opacity="0.6"/>
-    <circle cx="18" cy="18" r="1.5" fill="currentColor" opacity="0.3"/>
-  </svg>
-)
-
-// Separador decorativo
-const Divider = ({ className = '' }) => (
-  <svg className={`menu-divider ${className}`} viewBox="0 0 160 20" fill="none">
-    <path d="M0 10 L45 10" stroke="currentColor" strokeWidth="1" opacity="0.3"/>
-    <path d="M115 10 L160 10" stroke="currentColor" strokeWidth="1" opacity="0.3"/>
-    <path d="M50 10 Q65 3 80 10 Q95 17 110 10" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.6"/>
-    <circle cx="80" cy="10" r="2.5" fill="currentColor" opacity="0.7"/>
-  </svg>
-)
-
-// Icono WhatsApp
-const WhatsAppIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
-)
-
 function Menu() {
-  const [currentPage, setCurrentPage] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [contentVisible, setContentVisible] = useState(true)
   const [touchStart, setTouchStart] = useState(null)
+  const [sectionVisible, setSectionVisible] = useState(false)
+  const tabsRef = useRef(null)
+  const sectionRef = useRef(null)
 
-  const totalPages = menuCategories.length
+  const category = menuCategories[activeIndex]
 
-  const goToPage = useCallback((newPage) => {
-    if (isLoading || newPage === currentPage) return
-    if (newPage < 0) newPage = totalPages - 1
-    if (newPage >= totalPages) newPage = 0
+  const switchCategory = useCallback((index) => {
+    if (index === activeIndex || isAnimating) return
+    if (index < 0) index = menuCategories.length - 1
+    if (index >= menuCategories.length) index = 0
 
-    setIsLoading(true)
+    setIsAnimating(true)
+    setContentVisible(false)
 
     setTimeout(() => {
-      setCurrentPage(newPage)
+      setActiveIndex(index)
+      // Scroll active tab into view
+      if (tabsRef.current) {
+        const tab = tabsRef.current.children[index]
+        if (tab) {
+          tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+        }
+      }
       setTimeout(() => {
-        setIsLoading(false)
-      }, 300)
-    }, 200)
-  }, [isLoading, currentPage, totalPages])
+        setContentVisible(true)
+        setIsAnimating(false)
+      }, 50)
+    }, 350)
+  }, [activeIndex, isAnimating])
 
-  // Touch handlers
+  // Touch handlers for swipe
   const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX)
   const handleTouchEnd = (e) => {
     if (!touchStart) return
     const diff = touchStart - e.changedTouches[0].clientX
     if (Math.abs(diff) > 50) {
-      goToPage(diff > 0 ? currentPage + 1 : currentPage - 1)
+      switchCategory(diff > 0 ? activeIndex + 1 : activeIndex - 1)
     }
     setTouchStart(null)
   }
@@ -261,177 +242,174 @@ function Menu() {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'ArrowRight') goToPage(currentPage + 1)
-      if (e.key === 'ArrowLeft') goToPage(currentPage - 1)
+      if (e.key === 'ArrowRight') switchCategory(activeIndex + 1)
+      if (e.key === 'ArrowLeft') switchCategory(activeIndex - 1)
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [goToPage, currentPage])
+  }, [switchCategory, activeIndex])
 
-  const currentCategory = menuCategories[currentPage]
+  // Section visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setSectionVisible(true) },
+      { threshold: 0.1 }
+    )
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section id="menu" className="menu-section">
-      {/* Fondo beige elegante */}
-      <div className="menu-section__bg"></div>
+    <section id="carta" className="carta" ref={sectionRef}>
+      {/* Ambient background */}
+      <div className="carta__ambient" />
 
-      <div className="menu-section__container">
-        {/* Header */}
-        <header className="menu-section__header">
-          <span className="menu-section__eyebrow">Descubre</span>
-          <h2 className="menu-section__title">Nuestra Carta</h2>
-          <Divider className="menu-section__divider" />
-          <p className="menu-section__subtitle">
+      <div className={`carta__container ${sectionVisible ? 'carta__container--visible' : ''}`}>
+        {/* Section header */}
+        <header className="carta__header">
+          <span className="section-eyebrow">La Carta</span>
+          <h2 className="section-title">Nuestra Carta</h2>
+          <p className="carta__subtitle">
             Sabores auténticos del Perú, preparados con pasión y tradición
           </p>
         </header>
 
-        {/* Tabs de categorías */}
-        <nav className="menu-tabs">
-          {menuCategories.map((cat, i) => (
-            <button
-              key={cat.id}
-              className={`menu-tab ${i === currentPage ? 'menu-tab--active' : ''}`}
-              onClick={() => goToPage(i)}
-            >
-              <span className="menu-tab__icon">
-                <CategoryIcon type={cat.icon} />
-              </span>
-              <span className="menu-tab__name">{cat.name}</span>
-            </button>
-          ))}
-        </nav>
+        {/* Category tabs */}
+        <div className="carta__tabs-wrapper">
+          <nav className="carta__tabs" ref={tabsRef}>
+            {menuCategories.map((cat, i) => (
+              <button
+                key={cat.id}
+                className={`carta__tab ${i === activeIndex ? 'carta__tab--active' : ''}`}
+                onClick={() => switchCategory(i)}
+              >
+                <span className="carta__tab-icon">
+                  <CategoryIcon type={cat.icon} />
+                </span>
+                <span className="carta__tab-name">{cat.name}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
 
-        {/* Libro */}
+        {/* Main content */}
         <div
-          className="menu-book"
+          className="carta__main"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Botón anterior */}
-          <button className="menu-nav menu-nav--prev" onClick={() => goToPage(currentPage - 1)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          {/* Navigation arrows */}
+          <button
+            className="carta__arrow carta__arrow--prev"
+            onClick={() => switchCategory(activeIndex - 1)}
+            aria-label="Categoría anterior"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="15 18 9 12 15 6"/>
             </svg>
           </button>
 
-          {/* El libro */}
-          <div className="book">
-            {/* Sombra */}
-            <div className="book__shadow"></div>
-
-            {/* Lomo */}
-            <div className="book__spine"></div>
-
-            {/* Páginas apiladas izquierda */}
-            <div className="book__stacked-pages book__stacked-pages--left"></div>
-
-            {/* Páginas apiladas derecha */}
-            <div className="book__stacked-pages book__stacked-pages--right"></div>
-
-            {/* Página actual */}
-            <div className={`book__page ${isLoading ? 'book__page--loading' : ''}`}>
-              <div className="menu-page">
-                <div className="menu-page__paper"></div>
-
-                <CornerOrnament position="top-left" />
-                <CornerOrnament position="top-right" />
-                <CornerOrnament position="bottom-left" />
-                <CornerOrnament position="bottom-right" />
-
-                <div className="menu-page__border"></div>
-
-                {/* Contenido */}
-                <div className="menu-page__content">
-                  {/* Header de categoría */}
-                  <div className="category-header">
-                    <span className="category-header__icon">
-                      <CategoryIcon type={currentCategory.icon} />
-                    </span>
-                    <h3 className="category-header__title">{currentCategory.name}</h3>
-                    <p className="category-header__subtitle">{currentCategory.subtitle}</p>
-                    <div className="category-header__line"></div>
-                  </div>
-
-                  {/* Items del menú */}
-                  <div className={`menu-items ${currentCategory.dishes.length <= 4 ? 'menu-items--few' : ''}`}>
-                    {currentCategory.dishes.map((item) => (
-                      <article key={item.id} className={`menu-item ${item.featured ? 'menu-item--featured' : ''}`}>
-                        <div className="menu-item__header">
-                          {item.featured && <span className="menu-item__badge">★</span>}
-                          <h4 className="menu-item__name">{item.name}</h4>
-                          <span className="menu-item__line"></span>
-                          <span className="menu-item__price">${item.price}</span>
-                        </div>
-                        <p className="menu-item__desc">{item.desc}</p>
-                        <div className="menu-item__footer">
-                          <button
-                            className="menu-item__order"
-                            onClick={() => openWhatsApp(item.name, item.price)}
-                          >
-                            <WhatsAppIcon />
-                            <span>Pedir</span>
-                          </button>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Número de página elegante */}
-                <div className="menu-page__pagination">
-                  <div className="menu-page__pagination-inner">
-                    <span className="menu-page__pagination-current">{currentPage + 1}</span>
-                    <span className="menu-page__pagination-separator"></span>
-                    <span className="menu-page__pagination-total">{totalPages}</span>
-                  </div>
-                </div>
+          <div className="carta__content-wrapper">
+            {/* Category header */}
+            <div className={`carta__category ${contentVisible ? 'carta__category--visible' : ''}`}>
+              <div className="carta__category-icon">
+                <CategoryIcon type={category.icon} />
               </div>
+              <h3 className="carta__category-name">{category.name}</h3>
+              <p className="carta__category-sub">{category.subtitle}</p>
+              <div className="carta__category-line">
+                <span /><span /><span />
+              </div>
+            </div>
 
-              {/* Overlay de carga */}
-              {isLoading && (
-                <div className="book__loading-overlay">
-                  <div className="book__loading-spinner"></div>
-                </div>
-              )}
+            {/* Dishes grid */}
+            <div className={`carta__grid ${contentVisible ? 'carta__grid--visible' : ''}`}>
+              {category.dishes.map((dish, i) => (
+                <article
+                  key={dish.id}
+                  className={`carta__dish ${dish.featured ? 'carta__dish--featured' : ''}`}
+                  style={{ transitionDelay: contentVisible ? `${i * 0.06}s` : '0s' }}
+                >
+                  <div className="carta__dish-top">
+                    {dish.featured && (
+                      <span className="carta__dish-star">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                      </span>
+                    )}
+                    <h4 className="carta__dish-name">{dish.name}</h4>
+                    <span className="carta__dish-dots" />
+                    <span className="carta__dish-price">${dish.price}</span>
+                  </div>
+                  <p className="carta__dish-desc">{dish.desc}</p>
+                  <button
+                    className="carta__dish-order"
+                    onClick={() => openWhatsApp(dish.name, dish.price)}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span>Pedir</span>
+                  </button>
+                </article>
+              ))}
+            </div>
+
+            {/* Page counter */}
+            <div className={`carta__counter ${contentVisible ? 'carta__counter--visible' : ''}`}>
+              <span className="carta__counter-current">{String(activeIndex + 1).padStart(2, '0')}</span>
+              <span className="carta__counter-line" />
+              <span className="carta__counter-total">{String(menuCategories.length).padStart(2, '0')}</span>
             </div>
           </div>
 
-          {/* Botón siguiente */}
-          <button className="menu-nav menu-nav--next" onClick={() => goToPage(currentPage + 1)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <button
+            className="carta__arrow carta__arrow--next"
+            onClick={() => switchCategory(activeIndex + 1)}
+            aria-label="Categoría siguiente"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="9 18 15 12 9 6"/>
             </svg>
           </button>
         </div>
 
-        {/* Paginación */}
-        <nav className="menu-pagination">
-          <div className="menu-pagination__dots">
-            {menuCategories.map((_, i) => (
-              <button
-                key={i}
-                className={`menu-pagination__dot ${i === currentPage ? 'menu-pagination__dot--active' : ''}`}
-                onClick={() => goToPage(i)}
-              />
-            ))}
-          </div>
-        </nav>
+        {/* Progress dots */}
+        <div className="carta__progress">
+          {menuCategories.map((_, i) => (
+            <button
+              key={i}
+              className={`carta__dot ${i === activeIndex ? 'carta__dot--active' : ''}`}
+              onClick={() => switchCategory(i)}
+              aria-label={`Ir a ${menuCategories[i].name}`}
+            />
+          ))}
+        </div>
 
-        {/* CTA */}
-        <div className="menu-cta">
+        {/* Bottom CTA */}
+        <div className="carta__bottom">
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('¡Hola! Me gustaría hacer una reserva en Romelima')}`}
-            className="menu-cta__btn"
+            className="carta__cta-btn"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <WhatsAppIcon />
-            <span>Reservar Mesa</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <span>Reservar Mesa por WhatsApp</span>
           </a>
+          <p className="carta__hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Desliza o usa las flechas para navegar
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </p>
         </div>
-
-        <p className="menu-hint">Usa ← → o desliza para navegar</p>
       </div>
     </section>
   )

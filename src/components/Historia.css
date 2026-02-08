@@ -1,183 +1,121 @@
 /* ============================================
-   HISTORIA - SECCIÓN ROMELIMA
-   Historia auténtica de Romel
+   HISTORIA - DARK LUXURY EDITORIAL
    ============================================ */
-
 .historia {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg,
-    #1a1412 0%,
-    #2C2420 30%,
-    #1a1412 70%,
-    #0f0c0a 100%
-  );
+  background: var(--color-bg);
 }
 
-/* === FONDO CON PARTÍCULAS === */
-.historia__bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.historia__bg::before {
-  content: '';
+.historia__ambient {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 20% 20%, rgba(196, 30, 58, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 60%, rgba(212, 168, 83, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 40% 80%, rgba(196, 30, 58, 0.05) 0%, transparent 40%);
-}
-
-.historia__particles {
-  position: absolute;
-  inset: 0;
-}
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(212, 168, 83, 0.3);
-  border-radius: 50%;
-  animation: float-particle linear infinite;
-}
-
-.particle:nth-child(odd) {
-  background: rgba(196, 30, 58, 0.25);
-  width: 3px;
-  height: 3px;
-}
-
-@keyframes float-particle {
-  0% {
-    transform: translateY(100vh) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100px) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-/* === INTRO HERO === */
-.historia__intro {
-  position: relative;
-  min-height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 120px 20px 60px;
-}
-
-.historia__intro::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(to top, #1a1412, transparent);
+    radial-gradient(ellipse at 15% 20%, rgba(139, 38, 53, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 60%, rgba(201, 169, 110, 0.04) 0%, transparent 50%);
   pointer-events: none;
 }
 
-.historia__intro-content {
-  max-width: 600px;
+/* === HERO INTRO === */
+.historia__hero {
+  text-align: center;
+  padding: clamp(8rem, 15vw, 12rem) 2rem clamp(3rem, 6vw, 5rem);
   opacity: 0;
   transform: translateY(40px);
-  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 1s var(--ease-out);
 }
 
-.historia__intro--visible .historia__intro-content {
+.historia__hero--visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.historia__eyebrow {
-  display: inline-block;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  color: #D4A853;
-  margin-bottom: 15px;
+.historia__hero-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
 }
 
-.historia__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(2.5rem, 7vw, 4rem);
-  font-weight: 400;
-  font-style: italic;
-  color: #fff;
-  margin-bottom: 15px;
-  line-height: 1.1;
+/* === GALLERY STRIP === */
+.historia__gallery {
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  margin-bottom: clamp(5rem, 10vw, 8rem);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s var(--ease-out) 0.2s;
 }
 
-.historia__title-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+.historia__gallery--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.historia__title-line span {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.6), transparent);
+.historia__gallery-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 1340px;
+  margin: 0 auto;
 }
 
-.historia__title-icon {
-  width: 28px;
-  height: 28px;
-  color: #C41E3A;
-  animation: pulse-glow 3s ease-in-out infinite;
+.historia__gallery-item {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 5px rgba(196, 30, 58, 0.5));
+.historia__gallery-item--tall {
+  aspect-ratio: 3 / 4;
+}
+
+.historia__gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+  filter: brightness(0.85) contrast(1.05);
+}
+
+.historia__gallery-item:hover img {
+  transform: scale(1.06);
+  filter: brightness(1) contrast(1);
+}
+
+@media (max-width: 768px) {
+  .historia__gallery-track {
+    grid-template-columns: repeat(2, 1fr);
   }
-  50% {
-    filter: drop-shadow(0 0 15px rgba(196, 30, 58, 0.8));
-  }
 }
 
-.historia__subtitle {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+@media (max-width: 480px) {
+  .historia__gallery-track {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .historia__gallery-item--tall {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 /* === CONTAINER === */
 .historia__container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
 }
 
-/* === STORY SECTION === */
+/* === STORY === */
 .historia__story {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: clamp(3rem, 6vw, 5rem);
   align-items: center;
-  padding: 40px 0 100px;
+  padding-bottom: clamp(5rem, 10vw, 8rem);
   opacity: 0;
-  transform: translateY(60px);
-  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(50px);
+  transition: all 1s var(--ease-out);
 }
 
 .historia__story--visible {
@@ -185,223 +123,202 @@
   transform: translateY(0);
 }
 
-/* Images Layout */
+/* Images */
 .historia__story-images {
   position: relative;
-  height: 550px;
+  height: 520px;
 }
 
-.historia__image {
+.historia__img {
   position: absolute;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.6s var(--ease-out);
 }
 
-.historia__image img {
+.historia__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s ease;
+  transition: transform 0.8s var(--ease-out);
+  filter: brightness(0.9) contrast(1.05);
 }
 
-.historia__image:hover img {
+.historia__img:hover img {
   transform: scale(1.05);
+  filter: brightness(1);
 }
 
-.historia__image--main {
-  width: 300px;
-  height: 400px;
-  top: 40px;
+.historia__img--main {
+  width: 65%;
+  height: 80%;
+  top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 2;
 }
 
-.historia__image--main::after {
+.historia__img--main::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.6) 0%, transparent 40%);
 }
 
-.historia__image-overlay {
+.historia__img-label {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  z-index: 4;
-  color: #fff;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 3;
+  color: var(--color-text);
 }
 
-.historia__image-overlay span {
+.historia__img-label span {
   display: block;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 
-.historia__image-overlay small {
-  font-size: 0.75rem;
-  color: #D4A853;
+.historia__img-label small {
+  font-size: 0.65rem;
+  color: var(--color-gold);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
-.historia__image--secondary {
-  width: 200px;
-  height: 260px;
-  top: 0;
-  right: 50px;
-  z-index: 2;
-}
-
-.historia__image--accent {
-  width: 180px;
-  height: 220px;
+.historia__img--side {
+  width: 45%;
+  height: 55%;
   bottom: 0;
-  right: 10px;
+  right: 0;
   z-index: 1;
-  border: 3px solid rgba(212, 168, 83, 0.3);
+  border: 2px solid rgba(201, 169, 110, 0.15);
 }
 
-.historia__image--main:hover {
-  transform: translateY(-10px) rotate(-1deg);
+.historia__img--main:hover {
+  transform: translateY(-8px) rotate(-0.5deg);
 }
 
-.historia__image--secondary:hover {
-  transform: translateY(-10px) rotate(1deg);
+.historia__img--side:hover {
+  transform: translateY(-8px) rotate(0.5deg);
 }
 
-.historia__image--accent:hover {
-  transform: translateY(-10px) rotate(-1deg);
-}
-
-/* Badge */
-.historia__badge {
+/* Year badge */
+.historia__year-badge {
   position: absolute;
-  bottom: 70px;
-  left: 230px;
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(135deg, #C41E3A, #9B1B30);
+  bottom: 25%;
+  left: 55%;
+  width: 110px;
+  height: 110px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  box-shadow:
-    0 10px 40px rgba(196, 30, 58, 0.4),
-    inset 0 0 20px rgba(255, 255, 255, 0.1);
-  animation: badge-float 4s ease-in-out infinite;
+  box-shadow: var(--shadow-md), var(--shadow-glow-red);
+  animation: float 5s ease-in-out infinite;
 }
 
-@keyframes badge-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-.historia__badge-number {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2rem;
+.historia__year-number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-text);
   line-height: 1;
 }
 
-.historia__badge-text {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.9);
+.historia__year-text {
+  font-size: 0.55rem;
+  color: rgba(245, 240, 232, 0.8);
   text-transform: uppercase;
   letter-spacing: 1px;
   text-align: center;
   line-height: 1.3;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
-/* Story Content */
+/* Story content */
 .historia__story-content {
-  padding-right: 20px;
+  padding-right: 1rem;
 }
 
 .historia__story-title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2.2rem;
-  font-weight: 500;
-  color: #fff;
-  margin-bottom: 30px;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text);
+  margin-bottom: 2rem;
   position: relative;
+  padding-bottom: 1.5rem;
 }
 
 .historia__story-title::after {
   content: '';
   position: absolute;
-  bottom: -15px;
+  bottom: 0;
   left: 0;
-  width: 70px;
-  height: 3px;
-  background: linear-gradient(90deg, #C41E3A, #D4A853);
-  border-radius: 2px;
-}
-
-.historia__story-text {
-  margin-bottom: 30px;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
+  border-radius: 1px;
 }
 
 .historia__story-text p {
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.75);
-  line-height: 1.8;
-  margin-bottom: 18px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
 }
 
 .historia__story-text strong {
-  color: #D4A853;
-  font-weight: 600;
+  color: var(--color-gold);
+  font-weight: 500;
 }
 
-.drop-cap {
+.historia__drop {
   float: left;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 4rem;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
   font-weight: 600;
   line-height: 0.8;
-  padding-right: 12px;
-  color: #C41E3A;
-  text-shadow: 2px 2px 10px rgba(196, 30, 58, 0.3);
+  padding-right: 0.75rem;
+  color: var(--color-primary);
 }
 
 .historia__signature {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 0.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-text-dim);
+  margin-top: 1rem;
 }
 
 .historia__signature-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
   font-style: italic;
-  color: #D4A853;
+  color: var(--color-gold);
 }
 
-.historia__signature-title {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+.historia__signature-role {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 /* === DIFERENCIAS === */
 .historia__diferencias {
-  padding: 80px 0;
+  padding: clamp(4rem, 8vw, 6rem) 0;
   opacity: 0;
-  transform: translateY(60px);
-  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(50px);
+  transition: all 1s var(--ease-out);
 }
 
 .historia__diferencias--visible {
@@ -409,123 +326,88 @@
   transform: translateY(0);
 }
 
-.diferencias__header {
+.historia__diferencias-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.diferencias__label {
-  display: inline-block;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #D4A853;
-  margin-bottom: 10px;
-}
-
-.diferencias__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2.2rem;
-  font-weight: 400;
-  color: #fff;
-}
-
-.diferencias__grid {
+.historia__diferencias-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
+  gap: 1.5rem;
 }
 
-.diferencia-card {
-  position: relative;
-  padding: 35px 22px;
+.historia__card {
+  padding: 2rem 1.5rem;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
   text-align: center;
-  overflow: hidden;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.6s var(--ease-out);
 }
 
-.diferencia-card--visible {
+.historia__card--visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.diferencia-card:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(196, 30, 58, 0.3);
-  transform: translateY(-8px);
+.historia__card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(201, 169, 110, 0.15);
+  transform: translateY(-6px);
 }
 
-.diferencia-card__icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 18px;
-  background: linear-gradient(135deg, rgba(196, 30, 58, 0.15), rgba(196, 30, 58, 0.05));
+.historia__card-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 1rem;
+  background: rgba(139, 38, 53, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C41E3A;
-  transition: all 0.4s ease;
+  color: var(--color-primary-light);
+  transition: all 0.4s var(--ease-out);
 }
 
-.diferencia-card:hover .diferencia-card__icon {
-  background: linear-gradient(135deg, #C41E3A, #9B1B30);
-  color: #fff;
+.historia__card:hover .historia__card-icon {
+  background: var(--color-primary);
+  color: var(--color-text);
   transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
+  box-shadow: var(--shadow-glow-red);
 }
 
-.diferencia-card__icon svg {
-  width: 26px;
-  height: 26px;
+.historia__card-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
-.diferencia-card__title {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.05rem;
+.historia__card-title {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 10px;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
 }
 
-.diferencia-card__desc {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.55);
-  line-height: 1.5;
-}
-
-.diferencia-card__glow {
-  position: absolute;
-  bottom: -50%;
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, rgba(196, 30, 58, 0.3) 0%, transparent 70%);
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: all 0.4s ease;
-}
-
-.diferencia-card:hover .diferencia-card__glow {
-  opacity: 1;
-  bottom: -30%;
+.historia__card-desc {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--color-text-muted);
+  line-height: 1.6;
 }
 
 /* === QUOTE === */
 .historia__quote {
-  position: relative;
-  padding: 80px 0;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding: clamp(4rem, 8vw, 6rem) 2rem clamp(6rem, 12vw, 10rem);
   opacity: 0;
-  transform: translateY(60px);
-  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(50px);
+  transition: all 1s var(--ease-out);
 }
 
 .historia__quote--visible {
@@ -533,148 +415,64 @@
   transform: translateY(0);
 }
 
-.quote__bg {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(196, 30, 58, 0.08) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(212, 168, 83, 0.08) 0%, transparent 50%);
-  border-radius: 24px;
+.historia__quote-icon {
+  width: 36px;
+  height: 36px;
+  color: rgba(139, 38, 53, 0.4);
+  margin-bottom: 2rem;
 }
 
-.quote__content {
-  position: relative;
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 50px 30px;
-}
-
-.quote__icon {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  color: rgba(196, 30, 58, 0.4);
-  margin-bottom: 25px;
-}
-
-.quote__icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.quote__text {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 400;
+.historia__quote-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 300;
   font-style: italic;
-  color: #fff;
-  line-height: 1.6;
-  margin-bottom: 30px;
+  color: var(--color-text);
+  line-height: 1.7;
+  margin-bottom: 2rem;
 }
 
-.quote__author {
+.historia__quote-author {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.quote__author-info {
-  text-align: center;
-}
-
-.quote__author-name {
-  display: block;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+.historia__quote-name {
+  font-family: var(--font-display);
   font-size: 1.2rem;
   font-style: italic;
-  color: #D4A853;
-  margin-bottom: 5px;
+  color: var(--color-gold);
 }
 
-.quote__author-title {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
+.historia__quote-role {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
-/* === CTA FINAL === */
-.historia__cta {
-  text-align: center;
-  padding: 60px 20px 100px;
-}
-
-.historia__cta-text {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 25px;
-}
-
-.historia__cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 40px;
-  background: linear-gradient(135deg, #C41E3A, #9B1B30);
-  color: #fff;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.4s ease;
-  box-shadow: 0 5px 25px rgba(196, 30, 58, 0.3);
-}
-
-.historia__cta-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 35px rgba(196, 30, 58, 0.5);
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
+/* === RESPONSIVE === */
 @media (max-width: 1024px) {
   .historia__story {
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 3rem;
   }
 
   .historia__story-images {
-    height: 450px;
-    max-width: 450px;
+    height: 420px;
+    max-width: 420px;
     margin: 0 auto;
   }
 
-  .historia__image--main {
-    width: 260px;
-    height: 340px;
+  .historia__img--main {
+    width: 60%;
+    height: 75%;
   }
 
-  .historia__image--secondary {
-    width: 170px;
-    height: 220px;
-  }
-
-  .historia__image--accent {
-    width: 150px;
-    height: 180px;
-  }
-
-  .historia__badge {
-    left: 180px;
-    width: 100px;
-    height: 100px;
-  }
-
-  .historia__badge-number {
-    font-size: 1.6rem;
+  .historia__img--side {
+    width: 45%;
+    height: 50%;
   }
 
   .historia__story-content {
@@ -691,164 +489,87 @@
     align-items: center;
   }
 
-  .diferencias__grid {
+  .historia__diferencias-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .historia__intro {
-    min-height: 40vh;
-    padding: 100px 20px 50px;
-  }
-
-  .historia__title {
-    font-size: 2.2rem;
-  }
-
   .historia__story-images {
-    height: 380px;
+    height: 350px;
     max-width: 320px;
   }
 
-  .historia__image--main {
-    width: 220px;
-    height: 290px;
-    left: 0;
+  .historia__img--main {
+    width: 65%;
+    height: 80%;
   }
 
-  .historia__image--secondary {
-    width: 140px;
-    height: 180px;
-    right: 0;
+  .historia__img--side {
+    width: 45%;
+    height: 45%;
   }
 
-  .historia__image--accent {
-    display: none;
+  .historia__year-badge {
+    width: 85px;
+    height: 85px;
+    left: 50%;
   }
 
-  .historia__badge {
-    width: 90px;
-    height: 90px;
-    left: 150px;
-    bottom: 50px;
-  }
-
-  .historia__badge-number {
+  .historia__year-number {
     font-size: 1.4rem;
   }
 
-  .historia__badge-text {
-    font-size: 0.55rem;
+  .historia__drop {
+    font-size: 2.8rem;
   }
 
-  .historia__story-title {
-    font-size: 1.7rem;
-  }
-
-  .drop-cap {
-    font-size: 3rem;
-  }
-
-  .diferencias__grid {
+  .historia__diferencias-grid {
     grid-template-columns: 1fr;
     max-width: 350px;
     margin: 0 auto;
   }
-
-  .diferencia-card {
-    padding: 28px 20px;
-  }
-
-  .quote__text {
-    font-size: 1.3rem;
-  }
 }
 
 @media (max-width: 480px) {
-  .historia__intro {
-    padding: 90px 15px 40px;
-  }
-
-  .historia__title {
-    font-size: 1.9rem;
-  }
-
   .historia__story-images {
-    height: 320px;
+    height: 300px;
     max-width: 260px;
   }
 
-  .historia__image--main {
-    width: 180px;
-    height: 240px;
+  .historia__img--side {
+    display: none;
   }
 
-  .historia__image--secondary {
-    width: 120px;
-    height: 150px;
-    top: 30px;
+  .historia__img--main {
+    width: 100%;
+    height: 100%;
   }
 
-  .historia__badge {
-    width: 80px;
-    height: 80px;
-    left: 120px;
-    bottom: 30px;
+  .historia__year-badge {
+    left: auto;
+    right: -10px;
+    bottom: -10px;
+    width: 75px;
+    height: 75px;
   }
 
-  .historia__badge-number {
+  .historia__year-number {
     font-size: 1.2rem;
-  }
-
-  .historia__story-title {
-    font-size: 1.4rem;
-  }
-
-  .historia__story-text p {
-    font-size: 0.95rem;
-  }
-
-  .drop-cap {
-    font-size: 2.5rem;
-    padding-right: 8px;
-  }
-
-  .diferencias__title {
-    font-size: 1.8rem;
-  }
-
-  .quote__content {
-    padding: 35px 15px;
-  }
-
-  .quote__text {
-    font-size: 1.1rem;
-  }
-
-  .historia__cta-text {
-    font-size: 1rem;
-  }
-
-  .historia__cta-btn {
-    padding: 14px 30px;
-    font-size: 0.85rem;
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .particle,
-  .historia__badge,
-  .historia__title-icon {
+  .historia__year-badge {
     animation: none;
   }
 
-  .historia__intro-content,
+  .historia__hero,
+  .historia__gallery,
   .historia__story,
   .historia__diferencias,
   .historia__quote,
-  .diferencia-card {
+  .historia__card {
     opacity: 1;
     transform: none;
     transition: none;
